@@ -1,2 +1,6 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/.husky"
+
+
 npm run lint
 npm run format
