@@ -9,7 +9,6 @@
     "build-prod": "webpack --mode production",
     "test": "jest --watch",
     "prepare": "husky",
-    "postinstall": "husky install",
     "lint": "eslint --cache .",
     "format": "prettier --cache --write ."
   },
