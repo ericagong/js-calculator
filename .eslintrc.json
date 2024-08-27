@@ -12,7 +12,7 @@
     "rules": {
         "prettier/prettier": "error",
         "no-var": "error",
-        "no-console": ["warn", { "allow": ["warn", "error", "info"] }],
+        "no-console": ["error", { "allow": ["warn", "error", "info"] }],
         "eqeqeq": "warn",
         "no-unused-vars": "warn"
     }
