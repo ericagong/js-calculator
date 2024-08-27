@@ -1,5 +1,5 @@
 #!/usr/bin/env sh
-. "$(dirname -- "$0")/.husky"
+. "$(dirname -- "$0")/.husky.sh"
 
 
 npm run lint
