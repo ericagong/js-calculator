@@ -11,7 +11,7 @@
     "prepare": "husky",
     "lint": "eslint --cache ./src",
     "format": "prettier --cache --write ./src",
-    "commitlint" : "commitlint --edit"
+    "commitlint": "commitlint --edit"
   },
   "repository": {
     "type": "git",
@@ -34,7 +34,7 @@
     "babel-jest": "^29.3.1",
     "babel-loader": "^9.1.2",
     "clean-webpack-plugin": "^4.0.0",
-    "eslint": "^8.33.0",
+    "eslint": "^8.57.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-prettier": "^5.2.1",
     "esm": "^3.2.25",
@@ -53,5 +53,8 @@
     "presets": [
       "@babel/preset-env"
     ]
+  },
+  "dependencies": {
+    "eslint-plugin-jest": "^28.8.1"
   }
 }
