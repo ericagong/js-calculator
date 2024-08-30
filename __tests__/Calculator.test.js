@@ -68,7 +68,7 @@ describe('[Feature] 피연산자 두 개와 연산자 하나의 연산 결과를
         describe('첫 번째 피연산자는 0이 아니고, 두 번쨰 피연산자가 +0/-0인 경우, 나눗셈 결과 Infinity/-Infinity를 반환한다.', () => {
             it.each([
                 { operand1: 30, operand2: +0 },
-                { operand1: -30, operand2: +0 },
+                { operand1: -30, operand2: -0 },
             ])(
                 `calculator.divide($operand1, $operand2) = +Infinity`,
                 ({ operand1, operand2 }) => {
@@ -80,7 +80,7 @@ describe('[Feature] 피연산자 두 개와 연산자 하나의 연산 결과를
 
             it.each([
                 { operand1: 30, operand2: -0 },
-                { operand1: -30, operand2: -0 },
+                { operand1: -30, operand2: +0 },
             ])(
                 `calculator.divide($operand1, $operand2) = -Infinity`,
                 ({ operand1, operand2 }) => {
