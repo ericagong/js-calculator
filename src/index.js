@@ -14,7 +14,7 @@ export const ERROR_MESSAGE = {
 };
 
 export default class Calculator {
-    static ERROR_MESSAGE = '오류';
+    static DECMINAL_POINT_LIMIT = 3;
 
     #validate(operand) {
         if (operand === '' || operand === null || operand === undefined) {
@@ -28,7 +28,7 @@ export default class Calculator {
         }
 
         const integer = Math.trunc(Math.abs(operand));
-        if (integer.toString().length > 3) {
+        if (integer.toString().length > Calculator.DECMINAL_POINT_LIMIT) {
             throw new Error(ERROR_MESSAGE.LONG_OPERAND);
         }
     }
@@ -60,7 +60,7 @@ export default class Calculator {
             result === POSTIVE_INFINITY ||
             result === NEGATIVE_INFINITY
         ) {
-            return Calculator.ERROR_MESSAGE;
+            throw new Error(ERROR_MESSAGE.INVALID_RESULT);
         }
 
         const truncResult = Math.trunc(result);
