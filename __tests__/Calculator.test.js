@@ -66,7 +66,7 @@ describe('[Fearture1] 피연산자 유효성을 검사한다.', () => {
     });
 });
 
-describe.skip('[Feature2] 피연산자 두 개와 연산자 하나의 연산 결과를 반환한다.', () => {
+describe('[Feature2] 피연산자 두 개와 연산자 하나의 연산 결과를 반환한다.', () => {
     describe('두 개의 피연산자에 대해 덧셈 결과를 반환한다.', () => {
         it.each([
             { operand1: 1, operand2: 30 },
@@ -187,7 +187,7 @@ describe.skip('[Feature2] 피연산자 두 개와 연산자 하나의 연산 결
     });
 });
 
-describe.skip('[Feature3] 연산 결과를 특수 처리한다.', () => {
+describe('[Feature3] 연산 결과를 특수 처리한다.', () => {
     describe('연산 결과가 +Infinity/-Infinity/NaN인 경우, 오류를 반환한다.', () => {
         it.each([Infinity, -Infinity, NaN])(
             `calculator.display(%p) = '오류'`,

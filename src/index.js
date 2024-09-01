@@ -27,7 +27,8 @@ export default class Calculator {
             throw new Error(ERROR_MESSAGE.INVALID_OPERAND);
         }
 
-        if (operand.toString().length >= 4) {
+        const integer = Math.trunc(Math.abs(operand));
+        if (integer.toString().length > 3) {
             throw new Error(ERROR_MESSAGE.LONG_OPERAND);
         }
     }
