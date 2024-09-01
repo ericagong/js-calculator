@@ -130,22 +130,16 @@ describe('[Feature3] 연산 결과에 대한 특수 처리를 수행한다.', ()
         it.each([Infinity, -Infinity, NaN])(
             `calculator.display($result) = $result`,
             (result) => {
-                expect(calculator.display(result)).toBe(result);
+                expect(calculator.display(result)).toBe('오류');
             },
         );
     });
 
     describe('연산 결과가 정수인 경우, 정수를 반환한다.', () => {
-        it.each([
-            { result: 0, expected: 0 },
-            { result: 1, expected: 1 },
-            { result: -1, expected: -1 },
-            { result: 100, expected: 100 },
-            { result: -100, expected: -100 },
-        ])(
-            `calculator.display($result) = $expected`,
-            ({ result, expected }) => {
-                expect(calculator.display(result)).toBe(expected);
+        it.each([0, 1, -1, 100, -100, 1000, -1000])(
+            `calculator.display($result) = $result`,
+            (result) => {
+                expect(calculator.display(result)).toBe(result);
             },
         );
     });
@@ -164,9 +158,9 @@ describe('[Feature3] 연산 결과에 대한 특수 처리를 수행한다.', ()
         );
     });
 
-    describe('연산 결과가 +0/-0인 경우, 0을 반환한다.', () => {
-        it.each([+0, -0])(`calculator.display($result) = 0`, (result) => {
-            expect(calculator.display(result)).toBe(0);
+    describe('연산 결과가 -0인 경우, 0을 반환한다.', () => {
+        it(`calculator.display(-0) = 0`, () => {
+            expect(calculator.display(-0)).toBe(0);
         });
     });
 });
