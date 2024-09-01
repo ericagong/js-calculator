@@ -1,4 +1,9 @@
+const POSTIVE_INFINITY = +Infinity;
+const NEGATIVE_INFINITY = -Infinity;
+
 export default class Calculator {
+    static ERROR_MESSAGE = '오류';
+
     add(operand1, operand2) {
         return operand1 + operand2;
     }
@@ -18,16 +23,18 @@ export default class Calculator {
     display(result) {
         if (
             Number.isNaN(result) ||
-            result === +Infinity ||
-            result === -Infinity
+            result === POSTIVE_INFINITY ||
+            result === NEGATIVE_INFINITY
         ) {
-            return '오류';
+            return Calculator.ERROR_MESSAGE;
         }
 
-        if (Object.is(result, -0)) {
+        const truncResult = Math.trunc(result);
+
+        if (Object.is(truncResult, -0)) {
             return 0;
         }
 
-        return Math.trunc(result);
+        return truncResult;
     }
 }

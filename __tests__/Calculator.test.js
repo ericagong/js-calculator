@@ -1,8 +1,8 @@
 import Calculator from '../src';
 
-describe('[Feature2] 피연산자 두 개와 연산자 하나의 연산 결과를 반환한다.', () => {
-    const calculator = new Calculator();
+const calculator = new Calculator();
 
+describe('[Feature2] 피연산자 두 개와 연산자 하나의 연산 결과를 반환한다.', () => {
     describe('두 개의 피연산자에 대해 덧셈 결과를 반환한다.', () => {
         it.each([
             { operand1: 1, operand2: 30 },
@@ -124,11 +124,9 @@ describe('[Feature2] 피연산자 두 개와 연산자 하나의 연산 결과�
 });
 
 describe('[Feature3] 연산 결과에 대한 특수 처리를 수행한다.', () => {
-    const calculator = new Calculator();
-
     describe('연산 결과가 +Infinity/-Infinity/NaN인 경우, 오류를 반환한다.', () => {
         it.each([Infinity, -Infinity, NaN])(
-            `calculator.display($result) = $result`,
+            `calculator.display(%p) = '오류'`,
             (result) => {
                 expect(calculator.display(result)).toBe('오류');
             },
@@ -136,8 +134,8 @@ describe('[Feature3] 연산 결과에 대한 특수 처리를 수행한다.', ()
     });
 
     describe('연산 결과가 정수인 경우, 정수를 반환한다.', () => {
-        it.each([0, 1, -1, 100, -100, 1000, -1000])(
-            `calculator.display($result) = $result`,
+        it.each([-1, 1, -100, 100, -10000000, 10000000])(
+            `calculator.display(%i) `,
             (result) => {
                 expect(calculator.display(result)).toBe(result);
             },
@@ -150,6 +148,8 @@ describe('[Feature3] 연산 결과에 대한 특수 처리를 수행한다.', ()
             { result: -1.1, expected: -1 },
             { result: 1.9, expected: 1 },
             { result: -1.9, expected: -1 },
+            { result: -0.123456789, expected: 0 },
+            { result: 0.123456789, expected: 0 },
         ])(
             `calculator.display($result) = $expected`,
             ({ result, expected }) => {
