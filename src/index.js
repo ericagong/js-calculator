@@ -16,7 +16,26 @@ export const ERROR_MESSAGE = {
 export default class Calculator {
     static ERROR_MESSAGE = '오류';
 
-    validate(operand1, operand2) {}
+    #validate(operand) {
+        if (operand === '' || operand === null || operand === undefined) {
+            throw new Error(ERROR_MESSAGE.EMPTY_OPERAND);
+        }
+
+        if (typeof operand !== 'number' && typeof operand !== 'string') {
+            throw new Error(ERROR_MESSAGE.INVALID_OPERAND);
+        } else if (isNaN(operand)) {
+            throw new Error(ERROR_MESSAGE.INVALID_OPERAND);
+        }
+
+        if (operand.toString().length >= 4) {
+            throw new Error(ERROR_MESSAGE.LONG_OPERAND);
+        }
+    }
+
+    validate(operand1, operand2) {
+        this.#validate(operand1);
+        this.#validate(operand2);
+    }
 
     add(operand1, operand2) {
         return operand1 + operand2;

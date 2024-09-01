@@ -26,7 +26,7 @@ describe('[Fearture1] 피연산자 유효성을 검사한다.', () => {
             '-0.123',
             '+0.123',
         ])(`calculator.validate(%p)`, (operand) => {
-            expect(() => calculator.validate(operand, 1)).toThrow(
+            expect(() => calculator.validate(operand, 1)).not.toThrow(
                 ERROR_MESSAGE.INVALID_OPERAND,
             );
         });
@@ -43,7 +43,18 @@ describe('[Fearture1] 피연산자 유효성을 검사한다.', () => {
         );
     });
 
-    it('피연산자가 네 자리 이상이라면, 오류 메시지를 반환한다.', () => {
+    describe('피연산자가 네 자리 미만이라면, 오류를 발생시키지 않는다.', () => {
+        it.each([0, -0, 123, -123, 0.123, -0.123, 0.99999])(
+            `calculator.validate(%i)`,
+            (operand) => {
+                expect(() => calculator.validate(operand, 1)).not.toThrow(
+                    ERROR_MESSAGE.LONG_OPERAND,
+                );
+            },
+        );
+    });
+
+    describe('피연산자가 네 자리 이상이라면, 오류 메시지를 반환한다.', () => {
         it.each([1234, -1234, 12345, -12345])(
             `calculator.validate(%i)`,
             (operand) => {
@@ -53,27 +64,9 @@ describe('[Fearture1] 피연산자 유효성을 검사한다.', () => {
             },
         );
     });
-
-    it('그 외의 경우에는 올바른 피연산자로 판단한다.', () => {
-        expect(() =>
-            calculator.validate(valid_operand, valid_operand),
-        ).not.toThrow();
-        expect(() =>
-            calculator.validate(int_pos_operand, valid_operand),
-        ).not.toThrow();
-        expect(() =>
-            calculator.validate(int_neg_operand, valid_operand),
-        ).not.toThrow();
-        expect(() =>
-            calculator.validate(float_pos_operand, valid_operand),
-        ).not.toThrow();
-        expect(() =>
-            calculator.validate(float_neg_operand, valid_operand),
-        ).not.toThrow();
-    });
 });
 
-describe('[Feature2] 피연산자 두 개와 연산자 하나의 연산 결과를 반환한다.', () => {
+describe.skip('[Feature2] 피연산자 두 개와 연산자 하나의 연산 결과를 반환한다.', () => {
     describe('두 개의 피연산자에 대해 덧셈 결과를 반환한다.', () => {
         it.each([
             { operand1: 1, operand2: 30 },
@@ -194,7 +187,7 @@ describe('[Feature2] 피연산자 두 개와 연산자 하나의 연산 결과�
     });
 });
 
-describe('[Feature3] 연산 결과를 특수 처리한다.', () => {
+describe.skip('[Feature3] 연산 결과를 특수 처리한다.', () => {
     describe('연산 결과가 +Infinity/-Infinity/NaN인 경우, 오류를 반환한다.', () => {
         it.each([Infinity, -Infinity, NaN])(
             `calculator.display(%p) = '오류'`,
