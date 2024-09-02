@@ -1,13 +1,7 @@
 import { isEmpty, isNumber, isStringNumber, isBelowDigits } from './utils';
+
 const POSTIVE_INFINITY = +Infinity;
 const NEGATIVE_INFINITY = -Infinity;
-
-export const ERROR_MESSAGE = Object.freeze({
-    EMPTY_OPERAND: '피연산자가 비어있습니다.',
-    INVALID_OPERAND: '피연산자 형태가 유효하지 않습니다.',
-    LONG_OPERAND: '피연산자가 입력 가능 자릿수를 초과하였습니다.',
-    INVALID_RESULT: '계산 결과가 유효하지 않습니다.',
-});
 
 const OPERATORS = Object.freeze({
     ADD: '+',
@@ -23,7 +17,13 @@ const operatorMapper = {
     [OPERATORS.DIVIDE]: (a, b) => a / b,
 };
 
-// TODO : public interface를 calculate 하나로만 통합하고, validate, adjustResult는 private method로 변경
+export const ERROR_MESSAGE = Object.freeze({
+    EMPTY_OPERAND: '피연산자가 비어있습니다.',
+    INVALID_OPERAND: '피연산자 형태가 유효하지 않습니다.',
+    LONG_OPERAND: '피연산자가 입력 가능 자릿수를 초과하였습니다.',
+    INVALID_RESULT: '계산 결과가 유효하지 않습니다.',
+});
+
 export default class Calculator {
     static DECMINAL_POINT_LIMIT = 3;
 
@@ -54,16 +54,7 @@ export default class Calculator {
     }
 
     operate(operator, operand1, operand2) {
-        // this.validateOperator(operator);
         return operatorMapper[operator](operand1, operand2);
-    }
-
-    calculate(operator, operand1, operand2) {
-        this.validateOperands(operand1, operand2);
-        this.validateOperator(operator);
-        const output = this.operate(operator, operand1, operand2);
-        this.validateOutput(output);
-        return this.adjustOutput(output);
     }
 
     validateOutput(output) {
@@ -84,5 +75,13 @@ export default class Calculator {
         }
 
         return integerPart;
+    }
+
+    calculate(operator, operand1, operand2) {
+        this.validateOperands(operand1, operand2);
+        this.validateOperator(operator);
+        const output = this.operate(operator, operand1, operand2);
+        this.validateOutput(output);
+        return this.adjustOutput(output);
     }
 }
