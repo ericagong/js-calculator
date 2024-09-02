@@ -67,126 +67,152 @@ describe('[Fearture1] 피연산자 유효성을 검사한다.', () => {
 });
 
 describe('[Feature2] 피연산자 두 개와 연산자 하나의 연산 결과를 반환한다.', () => {
-    describe('두 개의 피연산자에 대해 덧셈 결과를 반환한다.', () => {
-        it.each([
-            { operand1: 1, operand2: 30 },
-            { operand1: -1, operand2: 30 },
-            { operand1: 1, operand2: -30 },
-            { operand1: -1, operand2: -30 },
-        ])(
-            `calculator.calculate(+, $operand1, $operand2)`,
-            ({ operand1, operand2 }) => {
-                expect(calculator.calculate('+', operand1, operand2)).toBe(
-                    operand1 + operand2,
-                );
-            },
-        );
+    describe('연산자의 유효성을 검사한다.', () => {
+        describe('+/-/*// 외의 연산자는 오류를 반환한다.', () => {
+            it.each(['a', '!', '@', '#', '$', '%', '^', '&', '(', ')'])(
+                `calculator.calculate(%p, 1, 1)`,
+                (operator) => {
+                    expect(() => calculator.calculate(operator, 1, 1)).toThrow(
+                        ERROR_MESSAGE.INVALID_OPERAND,
+                    );
+                },
+            );
+        });
+
+        describe('연산자가 주어지지 않은 경우, 오류를 반환한다.', () => {
+            it.each(['', null, undefined])(
+                `calculator.calculate(%p, 1, 1)`,
+                (operator) => {
+                    expect(() => calculator.calculate(operator, 1, 1)).toThrow(
+                        ERROR_MESSAGE.INVALID_OPERAND,
+                    );
+                },
+            );
+        });
     });
 
-    describe('두 개의 피연산자에 대해 뺄셈 결과를 반환한다.', () => {
-        it.each([
-            { operand1: 1, operand2: 30 },
-            { operand1: -1, operand2: 30 },
-            { operand1: 1, operand2: -30 },
-            { operand1: -1, operand2: -30 },
-        ])(
-            `calculator.calculate('-', $operand1, $operand2)`,
-            ({ operand1, operand2 }) => {
-                expect(calculator.calculate('-', operand1, operand2)).toBe(
-                    operand1 - operand2,
-                );
-            },
-        );
-    });
+    describe('+,-,*,/ 연산자에 대한, 올바른 연산 결과를 반환한다.', () => {
+        describe('두 개의 피연산자에 대해 덧셈 결과를 반환한다.', () => {
+            it.each([
+                { operand1: 1, operand2: 30 },
+                { operand1: -1, operand2: 30 },
+                { operand1: 1, operand2: -30 },
+                { operand1: -1, operand2: -30 },
+            ])(
+                `calculator.calculate(+, $operand1, $operand2)`,
+                ({ operand1, operand2 }) => {
+                    expect(calculator.calculate('+', operand1, operand2)).toBe(
+                        operand1 + operand2,
+                    );
+                },
+            );
+        });
 
-    describe('두 개의 피연산자에 대해 곱셈 결과를 반환한다.', () => {
-        it.each([
-            { operand1: 1, operand2: 30 },
-            { operand1: -1, operand2: 30 },
-            { operand1: 1, operand2: -30 },
-            { operand1: -1, operand2: -30 },
-        ])(
-            `calculator.calculate('*', $operand1, $operand2)`,
-            ({ operand1, operand2 }) => {
-                expect(calculator.calculate('*', operand1, operand2)).toBe(
-                    operand1 * operand2,
-                );
-            },
-        );
-    });
+        describe('두 개의 피연산자에 대해 뺄셈 결과를 반환한다.', () => {
+            it.each([
+                { operand1: 1, operand2: 30 },
+                { operand1: -1, operand2: 30 },
+                { operand1: 1, operand2: -30 },
+                { operand1: -1, operand2: -30 },
+            ])(
+                `calculator.calculate('-', $operand1, $operand2)`,
+                ({ operand1, operand2 }) => {
+                    expect(calculator.calculate('-', operand1, operand2)).toBe(
+                        operand1 - operand2,
+                    );
+                },
+            );
+        });
 
-    describe('두 개의 피연산자에 대해 나눗셈 결과를 반환한다.', () => {
-        it.each([
-            { operand1: 1, operand2: 30 },
-            { operand1: -1, operand2: 30 },
-            { operand1: 1, operand2: -30 },
-            { operand1: -1, operand2: -30 },
-        ])(
-            `calculator.calculate('/', $operand1, $operand2)`,
-            ({ operand1, operand2 }) => {
-                expect(calculator.calculate('/', operand1, operand2)).toBe(
-                    operand1 / operand2,
-                );
-            },
-        );
+        describe('두 개의 피연산자에 대해 곱셈 결과를 반환한다.', () => {
+            it.each([
+                { operand1: 1, operand2: 30 },
+                { operand1: -1, operand2: 30 },
+                { operand1: 1, operand2: -30 },
+                { operand1: -1, operand2: -30 },
+            ])(
+                `calculator.calculate('*', $operand1, $operand2)`,
+                ({ operand1, operand2 }) => {
+                    expect(calculator.calculate('*', operand1, operand2)).toBe(
+                        operand1 * operand2,
+                    );
+                },
+            );
+        });
 
-        describe('피연산자 중 0이 있는 경우, 올바른 나눗셈 결과를 반환한다.', () => {
-            describe('첫 번째 피연산자만 0인 경우, 0을 반환한다.', () => {
-                it.each([
-                    { operand1: +0, operand2: 30 },
-                    { operand1: +0, operand2: -30 },
-                    { operand1: -0, operand2: 30 },
-                    { operand1: -0, operand2: -30 },
-                ])(
-                    `calculator.calculate('/', $operand1, $operand2) = 0`,
-                    ({ operand1, operand2 }) => {
-                        expect(
-                            calculator.calculate('/', operand1, operand2),
-                        ).toBe(operand1 / operand2);
-                    },
-                );
-            });
+        describe('두 개의 피연산자에 대해 나눗셈 결과를 반환한다.', () => {
+            it.each([
+                { operand1: 1, operand2: 30 },
+                { operand1: -1, operand2: 30 },
+                { operand1: 1, operand2: -30 },
+                { operand1: -1, operand2: -30 },
+            ])(
+                `calculator.calculate('/', $operand1, $operand2)`,
+                ({ operand1, operand2 }) => {
+                    expect(calculator.calculate('/', operand1, operand2)).toBe(
+                        operand1 / operand2,
+                    );
+                },
+            );
 
-            describe('두 번째 피연산자만 0인 경우, 연산자 부호 동일성 여부에 따라 Infinity/-Infinity를 반환한다.', () => {
-                it.each([
-                    { operand1: 30, operand2: +0 },
-                    { operand1: -30, operand2: -0 },
-                ])(
-                    `calculator.calculate('/', $operand1, $operand2) = +Infinity`,
-                    ({ operand1, operand2 }) => {
-                        expect(
-                            calculator.calculate('/', operand1, operand2),
-                        ).toBe(Infinity);
-                    },
-                );
+            describe('피연산자 중 0이 있는 경우, 올바른 나눗셈 결과를 반환한다.', () => {
+                describe('첫 번째 피연산자만 0인 경우, 0을 반환한다.', () => {
+                    it.each([
+                        { operand1: +0, operand2: 30 },
+                        { operand1: +0, operand2: -30 },
+                        { operand1: -0, operand2: 30 },
+                        { operand1: -0, operand2: -30 },
+                    ])(
+                        `calculator.calculate('/', $operand1, $operand2) = 0`,
+                        ({ operand1, operand2 }) => {
+                            expect(
+                                calculator.calculate('/', operand1, operand2),
+                            ).toBe(operand1 / operand2);
+                        },
+                    );
+                });
 
-                it.each([
-                    { operand1: 30, operand2: -0 },
-                    { operand1: -30, operand2: +0 },
-                ])(
-                    `calculator.calculate('/', $operand1, $operand2) = -Infinity`,
-                    ({ operand1, operand2 }) => {
-                        expect(
-                            calculator.calculate('/', operand1, operand2),
-                        ).toBe(-Infinity);
-                    },
-                );
-            });
+                describe('두 번째 피연산자만 0인 경우, 연산자 부호 동일성 여부에 따라 Infinity/-Infinity를 반환한다.', () => {
+                    it.each([
+                        { operand1: 30, operand2: +0 },
+                        { operand1: -30, operand2: -0 },
+                    ])(
+                        `calculator.calculate('/', $operand1, $operand2) = +Infinity`,
+                        ({ operand1, operand2 }) => {
+                            expect(
+                                calculator.calculate('/', operand1, operand2),
+                            ).toBe(Infinity);
+                        },
+                    );
 
-            describe('두 피연산자가 모두 0인 경우, NaN을 반환한다.', () => {
-                it.each([
-                    { operand1: +0, operand2: +0 },
-                    { operand1: +0, operand2: -0 },
-                    { operand1: -0, operand2: +0 },
-                    { operand1: -0, operand2: -0 },
-                ])(
-                    `calculator.calculate('/', $operand1, $operand2) = NaN`,
-                    ({ operand1, operand2 }) => {
-                        expect(
-                            calculator.calculate('/', operand1, operand2),
-                        ).toBeNaN();
-                    },
-                );
+                    it.each([
+                        { operand1: 30, operand2: -0 },
+                        { operand1: -30, operand2: +0 },
+                    ])(
+                        `calculator.calculate('/', $operand1, $operand2) = -Infinity`,
+                        ({ operand1, operand2 }) => {
+                            expect(
+                                calculator.calculate('/', operand1, operand2),
+                            ).toBe(-Infinity);
+                        },
+                    );
+                });
+
+                describe('두 피연산자가 모두 0인 경우, NaN을 반환한다.', () => {
+                    it.each([
+                        { operand1: +0, operand2: +0 },
+                        { operand1: +0, operand2: -0 },
+                        { operand1: -0, operand2: +0 },
+                        { operand1: -0, operand2: -0 },
+                    ])(
+                        `calculator.calculate('/', $operand1, $operand2) = NaN`,
+                        ({ operand1, operand2 }) => {
+                            expect(
+                                calculator.calculate('/', operand1, operand2),
+                            ).toBeNaN();
+                        },
+                    );
+                });
             });
         });
     });

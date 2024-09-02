@@ -1,3 +1,4 @@
+import { isEmpty, isNumber, isStringNumber, isBelowDigits } from './utils';
 const POSTIVE_INFINITY = +Infinity;
 const NEGATIVE_INFINITY = -Infinity;
 
@@ -18,35 +19,21 @@ const OPERATIONS = Object.freeze({
 export default class Calculator {
     static DECMINAL_POINT_LIMIT = 3;
 
-    #isEmpty(operand) {
-        return operand === '' || operand === null || operand === undefined;
-    }
-
-    #isNumberOrStringNumber(operand) {
-        if (typeof operand === 'number') return true;
-        if (typeof operand === 'string' && !isNaN(operand)) return true;
-    }
-
-    #isBelow3Digits(operand) {
-        const integer = Math.trunc(Math.abs(operand));
-        return integer.toString().length <= Calculator.DECMINAL_POINT_LIMIT;
-    }
-
     validate(operand1, operand2) {
-        if (this.#isEmpty(operand1) || this.#isEmpty(operand2)) {
+        if (isEmpty(operand1) || isEmpty(operand2)) {
             throw new Error(ERROR_MESSAGE.EMPTY_OPERAND);
         }
 
         if (
-            !this.#isNumberOrStringNumber(operand1) ||
-            !this.#isNumberOrStringNumber(operand2)
+            !(isNumber(operand1) || isStringNumber(operand1)) ||
+            !(isNumber(operand2) || isStringNumber(operand2))
         ) {
             throw new Error(ERROR_MESSAGE.INVALID_OPERAND);
         }
 
         if (
-            !this.#isBelow3Digits(operand1) ||
-            !this.#isBelow3Digits(operand2)
+            !isBelowDigits(operand1, Calculator.DECMINAL_POINT_LIMIT) ||
+            !isBelowDigits(operand2, Calculator.DECMINAL_POINT_LIMIT)
         ) {
             throw new Error(ERROR_MESSAGE.LONG_OPERAND);
         }
@@ -55,32 +42,16 @@ export default class Calculator {
     calculate(operator, operand1, operand2) {
         switch (operator) {
             case OPERATIONS.ADD:
-                return this.#add(operand1, operand2);
+                return operand1 + operand2;
             case OPERATIONS.SUBTRACT:
-                return this.#subtarct(operand1, operand2);
+                return operand1 - operand2;
             case OPERATIONS.MULTIPLY:
-                return this.#multiply(operand1, operand2);
+                return operand1 * operand2;
             case OPERATIONS.DIVIDE:
-                return this.#divide(operand1, operand2);
+                return operand1 / operand2;
             default:
                 throw new Error(ERROR_MESSAGE.INVALID_OPERAND);
         }
-    }
-
-    #add(operand1, operand2) {
-        return operand1 + operand2;
-    }
-
-    #subtarct(operand1, operand2) {
-        return operand1 - operand2;
-    }
-
-    #multiply(operand1, operand2) {
-        return operand1 * operand2;
-    }
-
-    #divide(operand1, operand2) {
-        return operand1 / operand2;
     }
 
     adjustResult(result) {
