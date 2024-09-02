@@ -9,17 +9,25 @@ export const ERROR_MESSAGE = Object.freeze({
     INVALID_RESULT: '계산 결과가 유효하지 않습니다.',
 });
 
-const OPERATIONS = Object.freeze({
+const OPERATORS = Object.freeze({
     ADD: '+',
     SUBTRACT: '-',
     MULTIPLY: '*',
     DIVIDE: '/',
 });
 
+const operatorMapper = {
+    [OPERATORS.ADD]: (a, b) => a + b,
+    [OPERATORS.SUBTRACT]: (a, b) => a - b,
+    [OPERATORS.MULTIPLY]: (a, b) => a * b,
+    [OPERATORS.DIVIDE]: (a, b) => a / b,
+};
+
+// TODO : public interface를 calculate 하나로만 통합하고, validate, adjustResult는 private method로 변경
 export default class Calculator {
     static DECMINAL_POINT_LIMIT = 3;
 
-    validate(operand1, operand2) {
+    validateOperands(operand1, operand2) {
         if (isEmpty(operand1) || isEmpty(operand2)) {
             throw new Error(ERROR_MESSAGE.EMPTY_OPERAND);
         }
@@ -39,36 +47,42 @@ export default class Calculator {
         }
     }
 
-    calculate(operator, operand1, operand2) {
-        switch (operator) {
-            case OPERATIONS.ADD:
-                return operand1 + operand2;
-            case OPERATIONS.SUBTRACT:
-                return operand1 - operand2;
-            case OPERATIONS.MULTIPLY:
-                return operand1 * operand2;
-            case OPERATIONS.DIVIDE:
-                return operand1 / operand2;
-            default:
-                throw new Error(ERROR_MESSAGE.INVALID_OPERAND);
+    validateOperator(operator) {
+        if (operatorMapper[operator] === undefined) {
+            throw new Error(ERROR_MESSAGE.INVALID_OPERAND);
         }
     }
 
-    adjustResult(result) {
+    operate(operator, operand1, operand2) {
+        // this.validateOperator(operator);
+        return operatorMapper[operator](operand1, operand2);
+    }
+
+    calculate(operator, operand1, operand2) {
+        this.validateOperands(operand1, operand2);
+        this.validateOperator(operator);
+        const output = this.operate(operator, operand1, operand2);
+        this.validateOutput(output);
+        return this.adjustOutput(output);
+    }
+
+    validateOutput(output) {
         if (
-            Number.isNaN(result) ||
-            result === POSTIVE_INFINITY ||
-            result === NEGATIVE_INFINITY
+            Number.isNaN(output) ||
+            output === POSTIVE_INFINITY ||
+            output === NEGATIVE_INFINITY
         ) {
             throw new Error(ERROR_MESSAGE.INVALID_RESULT);
         }
+    }
 
-        const truncResult = Math.trunc(result);
+    adjustOutput(output) {
+        const integerPart = Math.trunc(output);
 
-        if (Object.is(truncResult, -0)) {
+        if (Object.is(integerPart, -0)) {
             return 0;
         }
 
-        return truncResult;
+        return integerPart;
     }
 }
