@@ -73,11 +73,14 @@ describe('[Feature2] 피연산자 두 개와 연산자 하나의 연산 결과�
             { operand1: -1, operand2: 30 },
             { operand1: 1, operand2: -30 },
             { operand1: -1, operand2: -30 },
-        ])(`calculator.add($operand1, $operand2)`, ({ operand1, operand2 }) => {
-            expect(calculator.add(operand1, operand2)).toBe(
-                operand1 + operand2,
-            );
-        });
+        ])(
+            `calculator.calculate(+, $operand1, $operand2)`,
+            ({ operand1, operand2 }) => {
+                expect(calculator.calculate('+', operand1, operand2)).toBe(
+                    operand1 + operand2,
+                );
+            },
+        );
     });
 
     describe('두 개의 피연산자에 대해 뺄셈 결과를 반환한다.', () => {
@@ -87,9 +90,9 @@ describe('[Feature2] 피연산자 두 개와 연산자 하나의 연산 결과�
             { operand1: 1, operand2: -30 },
             { operand1: -1, operand2: -30 },
         ])(
-            `calculator.subtract($operand1, $operand2)`,
+            `calculator.calculate('-', $operand1, $operand2)`,
             ({ operand1, operand2 }) => {
-                expect(calculator.subtarct(operand1, operand2)).toBe(
+                expect(calculator.calculate('-', operand1, operand2)).toBe(
                     operand1 - operand2,
                 );
             },
@@ -103,9 +106,9 @@ describe('[Feature2] 피연산자 두 개와 연산자 하나의 연산 결과�
             { operand1: 1, operand2: -30 },
             { operand1: -1, operand2: -30 },
         ])(
-            `calculator.multiply($operand1, $operand2)`,
+            `calculator.calculate('*', $operand1, $operand2)`,
             ({ operand1, operand2 }) => {
-                expect(calculator.multiply(operand1, operand2)).toBe(
+                expect(calculator.calculate('*', operand1, operand2)).toBe(
                     operand1 * operand2,
                 );
             },
@@ -119,9 +122,9 @@ describe('[Feature2] 피연산자 두 개와 연산자 하나의 연산 결과�
             { operand1: 1, operand2: -30 },
             { operand1: -1, operand2: -30 },
         ])(
-            `calculator.divide($operand1, $operand2)`,
+            `calculator.calculate('/', $operand1, $operand2)`,
             ({ operand1, operand2 }) => {
-                expect(calculator.divide(operand1, operand2)).toBe(
+                expect(calculator.calculate('/', operand1, operand2)).toBe(
                     operand1 / operand2,
                 );
             },
@@ -135,11 +138,11 @@ describe('[Feature2] 피연산자 두 개와 연산자 하나의 연산 결과�
                     { operand1: -0, operand2: 30 },
                     { operand1: -0, operand2: -30 },
                 ])(
-                    `calculator.divide($operand1, $operand2) = 0`,
+                    `calculator.calculate('/', $operand1, $operand2) = 0`,
                     ({ operand1, operand2 }) => {
-                        expect(calculator.divide(operand1, operand2)).toBe(
-                            operand1 / operand2,
-                        );
+                        expect(
+                            calculator.calculate('/', operand1, operand2),
+                        ).toBe(operand1 / operand2);
                     },
                 );
             });
@@ -149,11 +152,11 @@ describe('[Feature2] 피연산자 두 개와 연산자 하나의 연산 결과�
                     { operand1: 30, operand2: +0 },
                     { operand1: -30, operand2: -0 },
                 ])(
-                    `calculator.divide($operand1, $operand2) = +Infinity`,
+                    `calculator.calculate('/', $operand1, $operand2) = +Infinity`,
                     ({ operand1, operand2 }) => {
-                        expect(calculator.divide(operand1, operand2)).toBe(
-                            Infinity,
-                        );
+                        expect(
+                            calculator.calculate('/', operand1, operand2),
+                        ).toBe(Infinity);
                     },
                 );
 
@@ -161,11 +164,11 @@ describe('[Feature2] 피연산자 두 개와 연산자 하나의 연산 결과�
                     { operand1: 30, operand2: -0 },
                     { operand1: -30, operand2: +0 },
                 ])(
-                    `calculator.divide($operand1, $operand2) = -Infinity`,
+                    `calculator.calculate('/', $operand1, $operand2) = -Infinity`,
                     ({ operand1, operand2 }) => {
-                        expect(calculator.divide(operand1, operand2)).toBe(
-                            -Infinity,
-                        );
+                        expect(
+                            calculator.calculate('/', operand1, operand2),
+                        ).toBe(-Infinity);
                     },
                 );
             });
@@ -177,9 +180,11 @@ describe('[Feature2] 피연산자 두 개와 연산자 하나의 연산 결과�
                     { operand1: -0, operand2: +0 },
                     { operand1: -0, operand2: -0 },
                 ])(
-                    `calculator.divide($operand1, $operand2) = NaN`,
+                    `calculator.calculate('/', $operand1, $operand2) = NaN`,
                     ({ operand1, operand2 }) => {
-                        expect(calculator.divide(operand1, operand2)).toBeNaN();
+                        expect(
+                            calculator.calculate('/', operand1, operand2),
+                        ).toBeNaN();
                     },
                 );
             });
@@ -190,9 +195,9 @@ describe('[Feature2] 피연산자 두 개와 연산자 하나의 연산 결과�
 describe('[Feature3] 연산 결과를 특수 처리한다.', () => {
     describe('연산 결과가 +Infinity/-Infinity/NaN인 경우, 오류를 반환한다.', () => {
         it.each([Infinity, -Infinity, NaN])(
-            `calculator.display(%p)'`,
+            `calculator.adjustResult(%p)'`,
             (result) => {
-                expect(() => calculator.display(result)).toThrow(
+                expect(() => calculator.adjustResult(result)).toThrow(
                     ERROR_MESSAGE.INVALID_RESULT,
                 );
             },
@@ -201,9 +206,9 @@ describe('[Feature3] 연산 결과를 특수 처리한다.', () => {
 
     describe('연산 결과가 정수인 경우, 정수를 반환한다.', () => {
         it.each([-1, 1, -100, 100, -10000000, 10000000])(
-            `calculator.display(%i) `,
+            `calculator.adjustResult(%i) `,
             (result) => {
-                expect(calculator.display(result)).toBe(result);
+                expect(calculator.adjustResult(result)).toBe(result);
             },
         );
     });
@@ -217,16 +222,16 @@ describe('[Feature3] 연산 결과를 특수 처리한다.', () => {
             { result: -0.123456789, expected: 0 },
             { result: 0.123456789, expected: 0 },
         ])(
-            `calculator.display($result) = $expected`,
+            `calculator.adjustResult($result) = $expected`,
             ({ result, expected }) => {
-                expect(calculator.display(result)).toBe(expected);
+                expect(calculator.adjustResult(result)).toBe(expected);
             },
         );
     });
 
     describe('연산 결과가 -0인 경우, 0을 반환한다.', () => {
-        it(`calculator.display(-0) = 0`, () => {
-            expect(calculator.display(-0)).toBe(0);
+        it(`calculator.adjustResult(-0) = 0`, () => {
+            expect(calculator.adjustResult(-0)).toBe(0);
         });
     });
 });
