@@ -4,20 +4,10 @@ import {
     isValidOutput,
 } from './validation.js';
 import { operate } from './operation.js';
+import { removeDecimalAndSignAdjust } from './nomalize.js';
 import { ValidationError } from './ValidationError.js';
 
-// FIXME: _adjustOutput private method 테스트 방법 고민 필요
 export default class Calculator {
-    _adjustOutput(output) {
-        const integerPart = Math.trunc(output);
-
-        if (Object.is(integerPart, -0)) {
-            return 0;
-        }
-
-        return integerPart;
-    }
-
     calculate(operator, operand1, operand2) {
         try {
             isValidOperand(operand1);
@@ -28,7 +18,7 @@ export default class Calculator {
 
             isValidOutput(output);
 
-            return this._adjustOutput(output);
+            return removeDecimalAndSignAdjust(output);
         } catch (e) {
             if (e instanceof ValidationError) {
                 e.handle();
