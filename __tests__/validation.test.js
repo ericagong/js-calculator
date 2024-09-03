@@ -2,14 +2,17 @@ import {
     isValidOperand,
     isValidOperator,
     isValidOutput,
-    ERROR_MESSAGE,
 } from '../src/validation.js';
+import {
+    INPUT_ERROR_MESSAGE,
+    OUTPUT_ERROR_MESSAGE,
+} from '../src/ValidationError.js';
 
 describe('[Fearture1] 피연산자 유효성을 검사한다.', () => {
     describe('피연산자가 빈 값이면, 오류 메시지를 반환한다.', () => {
         it.each(['', null, undefined])(`isValidOperand(%s)`, (operand) => {
             expect(() => isValidOperand(operand, 1)).toThrow(
-                ERROR_MESSAGE.EMPTY_OPERAND,
+                INPUT_ERROR_MESSAGE.EMPTY_OPERAND,
             );
         });
     });
@@ -29,7 +32,7 @@ describe('[Fearture1] 피연산자 유효성을 검사한다.', () => {
             '+0.123',
         ])(`isValidOperand(%p)`, (operand) => {
             expect(() => isValidOperand(operand)).not.toThrow(
-                ERROR_MESSAGE.INVALID_OPERAND,
+                INPUT_ERROR_MESSAGE.INVALID_OPERAND,
             );
         });
     });
@@ -39,7 +42,7 @@ describe('[Fearture1] 피연산자 유효성을 검사한다.', () => {
             `isValidOperand(%p)`,
             (operand) => {
                 expect(() => isValidOperand(operand)).toThrow(
-                    ERROR_MESSAGE.INVALID_OPERAND,
+                    INPUT_ERROR_MESSAGE.INVALID_OPERAND,
                 );
             },
         );
@@ -50,7 +53,7 @@ describe('[Fearture1] 피연산자 유효성을 검사한다.', () => {
             `isValidOperand(%i)`,
             (operand) => {
                 expect(() => isValidOperand(operand)).not.toThrow(
-                    ERROR_MESSAGE.LONG_OPERAND,
+                    INPUT_ERROR_MESSAGE.LONG_OPERAND,
                 );
             },
         );
@@ -61,7 +64,7 @@ describe('[Fearture1] 피연산자 유효성을 검사한다.', () => {
             `isValidOperand(%i)`,
             (operand) => {
                 expect(() => isValidOperand(operand)).toThrow(
-                    ERROR_MESSAGE.LONG_OPERAND,
+                    INPUT_ERROR_MESSAGE.LONG_OPERAND,
                 );
             },
         );
@@ -75,7 +78,7 @@ describe('[Feature2] 피연산자 두 개와 연산자 하나의 연산 결과�
                 `isValidOperator(%p, 1, 1)`,
                 (operator) => {
                     expect(() => isValidOperator(operator, 1, 1)).toThrow(
-                        ERROR_MESSAGE.INVALID_OPERAND,
+                        INPUT_ERROR_MESSAGE.INVALID_OPERATOR,
                     );
                 },
             );
@@ -86,7 +89,7 @@ describe('[Feature2] 피연산자 두 개와 연산자 하나의 연산 결과�
                 `isValidOperator(%p, 1, 1)`,
                 (operator) => {
                     expect(() => isValidOperator(operator, 1, 1)).toThrow(
-                        ERROR_MESSAGE.INVALID_OPERAND,
+                        INPUT_ERROR_MESSAGE.INVALID_OPERATOR,
                     );
                 },
             );
@@ -98,7 +101,7 @@ describe('[Feature3] 연산 결과를 특수 처리한다.', () => {
     describe('연산 결과가 +Infinity/-Infinity/NaN인 경우, 오류를 발생시킨다.', () => {
         it.each([Infinity, -Infinity, NaN])(`isValidOutput(%p)'`, (result) => {
             expect(() => isValidOutput(result)).toThrow(
-                ERROR_MESSAGE.INVALID_RESULT,
+                INPUT_ERROR_MESSAGE.INVALID_RESULT,
             );
         });
     });
@@ -108,7 +111,7 @@ describe('[Feature3] 연산 결과를 특수 처리한다.', () => {
             `isValidOutput(%i) `,
             (result) => {
                 expect(() => isValidOutput(result)).not.toThrow(
-                    ERROR_MESSAGE.INVALID_RESULT,
+                    OUTPUT_ERROR_MESSAGE.INVALID_RESULT,
                 );
             },
         );
