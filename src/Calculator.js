@@ -1,21 +1,8 @@
 import { isEmpty, isNumber, isStringNumber, isBelowDigits } from './utils';
+import { operatorMapper, operate } from './operation.js';
 
 const POSTIVE_INFINITY = +Infinity;
 const NEGATIVE_INFINITY = -Infinity;
-
-const OPERATORS = Object.freeze({
-    ADD: '+',
-    SUBTRACT: '-',
-    MULTIPLY: '*',
-    DIVIDE: '/',
-});
-
-const operatorMapper = {
-    [OPERATORS.ADD]: (a, b) => a + b,
-    [OPERATORS.SUBTRACT]: (a, b) => a - b,
-    [OPERATORS.MULTIPLY]: (a, b) => a * b,
-    [OPERATORS.DIVIDE]: (a, b) => a / b,
-};
 
 export const ERROR_MESSAGE = Object.freeze({
     EMPTY_OPERAND: '피연산자가 비어있습니다.',
@@ -54,10 +41,6 @@ export default class Calculator {
         }
     }
 
-    operate(operator, operand1, operand2) {
-        return operatorMapper[operator](operand1, operand2);
-    }
-
     validateOutput(output) {
         if (
             Number.isNaN(output) ||
@@ -82,7 +65,7 @@ export default class Calculator {
         try {
             this.validateOperands(operand1, operand2);
             this.validateOperator(operator);
-            const output = this.operate(operator, operand1, operand2);
+            const output = operate(operator, operand1, operand2);
             this.validateOutput(output);
             return this.adjustOutput(output);
         } catch (e) {
