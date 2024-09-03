@@ -98,16 +98,16 @@ describe('[Feature2] 피연산자 두 개와 연산자 하나의 연산 결과�
 });
 
 describe('[Feature3] 연산 결과를 특수 처리한다.', () => {
-    describe('연산 결과가 +Infinity/-Infinity/NaN인 경우, 오류를 발생시킨다.', () => {
-        it.each([Infinity, -Infinity, NaN])(`isValidOutput(%p)'`, (result) => {
-            expect(() => isValidOutput(result)).toThrow(
+    describe('연산 결과가 NaN인 경우, 오류를 발생시킨다.', () => {
+        it(`isValidOutput(NaN)'`, () => {
+            expect(() => isValidOutput(NaN)).toThrow(
                 INPUT_ERROR_MESSAGE.INVALID_RESULT,
             );
         });
     });
 
     describe('연산 결과가 숫자인 경우, 오류를 발생시키지 않는다.', () => {
-        it.each([-1, 1, -100, 100, -10000000, 10000000])(
+        it.each([-1, 1, -100, 100, -10000000, 10000000, +Infinity, -Infinity])(
             `isValidOutput(%i) `,
             (result) => {
                 expect(() => isValidOutput(result)).not.toThrow(

@@ -47,15 +47,8 @@ export const isValidOperator = (operator) => {
 };
 
 // FIXME: 정상적인 userflow에서 발생할 수 없는 에러 감지 필요한지 고민
-// FIXME: POSITIVE_INFINITY, NEGATIVE_INFINITY 처리 방법 고민
-const POSTIVE_INFINITY = +Infinity;
-const NEGATIVE_INFINITY = -Infinity;
 export const isValidOutput = (output) => {
-    if (
-        Number.isNaN(output) ||
-        output === POSTIVE_INFINITY ||
-        output === NEGATIVE_INFINITY
-    ) {
+    if (Number.isNaN(output)) {
         throw new OutputValidationError(OUTPUT_ERROR_MESSAGE.INVALID_RESULT);
     }
 };

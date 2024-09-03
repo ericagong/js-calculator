@@ -1,9 +1,24 @@
-export const removeDecimalAndAdjustSign = (output) => {
-    const integerPart = Math.trunc(output);
-
-    if (Object.is(integerPart, -0)) {
-        return 0;
+const POSTIVE_INFINITY = +Infinity;
+const NEGATIVE_INFINITY = -Infinity;
+export const INFINITY_OUTPUT = '오류';
+const errorMessageForInfinity = (output) => {
+    if (output === POSTIVE_INFINITY || output === NEGATIVE_INFINITY) {
+        return INFINITY_OUTPUT;
     }
+    return output;
+};
 
-    return integerPart;
+const removeDecimal = (input) => {
+    return Math.trunc(input);
+};
+
+const convertToPositiveZero = (input) => {
+    return Object.is(input, -0) ? 0 : input;
+};
+
+export const normalizeOutput = (output) => {
+    output = removeDecimal(output);
+    output = convertToPositiveZero(output);
+    output = errorMessageForInfinity(output);
+    return output;
 };
