@@ -24,6 +24,7 @@ export const ERROR_MESSAGE = Object.freeze({
     INVALID_RESULT: '계산 결과가 유효하지 않습니다.',
 });
 
+// TODO private, public 메소드 구분
 export default class Calculator {
     static DECMINAL_POINT_LIMIT = 3;
 
@@ -78,10 +79,14 @@ export default class Calculator {
     }
 
     calculate(operator, operand1, operand2) {
-        this.validateOperands(operand1, operand2);
-        this.validateOperator(operator);
-        const output = this.operate(operator, operand1, operand2);
-        this.validateOutput(output);
-        return this.adjustOutput(output);
+        try {
+            this.validateOperands(operand1, operand2);
+            this.validateOperator(operator);
+            const output = this.operate(operator, operand1, operand2);
+            this.validateOutput(output);
+            return this.adjustOutput(output);
+        } catch (e) {
+            return e.message;
+        }
     }
 }

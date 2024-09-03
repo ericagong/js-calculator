@@ -18,7 +18,7 @@
     "url": "git+https://github.com/ericagong/js-calculator.git"
   },
   "keywords": [],
-  "author": "",
+  "author": "Erica Gong",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/ericagong/js-calculator/issues"
@@ -36,6 +36,7 @@
     "clean-webpack-plugin": "^4.0.0",
     "eslint": "^8.57.0",
     "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-jest": "^28.8.2",
     "eslint-plugin-prettier": "^5.2.1",
     "esm": "^3.2.25",
     "husky": "^9.1.5",
@@ -53,8 +54,5 @@
     "presets": [
       "@babel/preset-env"
     ]
-  },
-  "dependencies": {
-    "eslint-plugin-jest": "^28.8.1"
   }
 }
