@@ -25,6 +25,7 @@ const isBelowDigits = (operand, digits) => {
     return integerPart.toString().length <= digits;
 };
 
+// FIXME: validation 함수와 오류 처리 함수 분리 방법 고민해 적용
 export const isValidOperand = (operand) => {
     if (isEmpty(operand)) {
         throw new InputValidationError(INPUT_ERROR_MESSAGE.EMPTY_OPERAND);
@@ -45,6 +46,8 @@ export const isValidOperator = (operator) => {
     }
 };
 
+// FIXME: 정상적인 userflow에서 발생할 수 없는 에러 감지 필요한지 고민
+// FIXME: POSITIVE_INFINITY, NEGATIVE_INFINITY 처리 방법 고민
 const POSTIVE_INFINITY = +Infinity;
 const NEGATIVE_INFINITY = -Infinity;
 export const isValidOutput = (output) => {
