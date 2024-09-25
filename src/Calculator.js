@@ -1,7 +1,7 @@
 import {
-    isValidOperand,
-    isValidOperator,
-    isValidOutput,
+    validateOperand,
+    validateOperator,
+    validateResult,
 } from './validation.js';
 import { operate } from './operation.js';
 import { removeDecimalAndSignAdjust } from './nomalize.js';
@@ -10,13 +10,13 @@ import { ValidationError } from './ValidationError.js';
 export default class Calculator {
     calculate(operator, operand1, operand2) {
         try {
-            isValidOperand(operand1);
-            isValidOperand(operand2);
-            isValidOperator(operator);
+            validateOperand(operand1);
+            validateOperand(operand2);
+            validateOperator(operator);
 
             const output = operate(operator, operand1, operand2);
 
-            isValidOutput(output);
+            validateResult(output);
 
             return removeDecimalAndSignAdjust(output);
         } catch (e) {
