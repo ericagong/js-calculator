@@ -4,15 +4,18 @@ import {
     validateResult,
 } from '../src/validation.js';
 import {
-    INPUT_ERROR_MESSAGE,
-    OUTPUT_ERROR_MESSAGE,
+    EmptyOperandValidationError,
+    InvalidOperandValidationError,
+    LongOperandValidationError,
+    OperatorValidationError,
+    ResultValidationError,
 } from '../src/ValidationError.js';
 
 describe('[Fearture1] 피연산자 유효성을 검사한다.', () => {
-    describe('피연산자가 빈 값이면, 오류 메시지를 생성한다.', () => {
+    describe('피연산자가 빈 값이면, 오류를 생성한다.', () => {
         it.each(['', null, undefined])(`validateOperand(%s)`, (operand) => {
-            expect(() => validateOperand(operand, 1)).toThrow(
-                INPUT_ERROR_MESSAGE.EMPTY_OPERAND,
+            expect(() => validateOperand(operand, 1)).toThrowError(
+                EmptyOperandValidationError,
             );
         });
     });
@@ -31,8 +34,8 @@ describe('[Fearture1] 피연산자 유효성을 검사한다.', () => {
             '-0.123',
             '+0.123',
         ])(`validateOperand(%p)`, (operand) => {
-            expect(() => validateOperand(operand)).not.toThrow(
-                INPUT_ERROR_MESSAGE.INVALID_OPERAND,
+            expect(() => validateOperand(operand)).not.toThrowError(
+                InvalidOperandValidationError,
             );
         });
     });
@@ -41,8 +44,8 @@ describe('[Fearture1] 피연산자 유효성을 검사한다.', () => {
         it.each(['123a', 'abc123', true, false, [], {}])(
             `validateOperand(%p)`,
             (operand) => {
-                expect(() => validateOperand(operand)).toThrow(
-                    INPUT_ERROR_MESSAGE.INVALID_OPERAND,
+                expect(() => validateOperand(operand)).toThrowError(
+                    InvalidOperandValidationError,
                 );
             },
         );
@@ -52,8 +55,8 @@ describe('[Fearture1] 피연산자 유효성을 검사한다.', () => {
         it.each([0, -0, 123, -123, 0.123, -0.123, 0.99999])(
             `validateOperand(%i)`,
             (operand) => {
-                expect(() => validateOperand(operand)).not.toThrow(
-                    INPUT_ERROR_MESSAGE.LONG_OPERAND,
+                expect(() => validateOperand(operand)).not.toThrowError(
+                    LongOperandValidationError,
                 );
             },
         );
@@ -63,8 +66,8 @@ describe('[Fearture1] 피연산자 유효성을 검사한다.', () => {
         it.each([1234, -1234, 12345, -12345])(
             `validateOperand(%i)`,
             (operand) => {
-                expect(() => validateOperand(operand)).toThrow(
-                    INPUT_ERROR_MESSAGE.LONG_OPERAND,
+                expect(() => validateOperand(operand)).toThrowError(
+                    LongOperandValidationError,
                 );
             },
         );
@@ -77,8 +80,8 @@ describe('[Feature2] 피연산자 두 개와 연산자 하나의 연산 결과�
             it.each(['a', '!', '@', '#', '$', '%', '^', '&', '(', ')'])(
                 `validateOperator(%p, 1, 1)`,
                 (operator) => {
-                    expect(() => validateOperator(operator, 1, 1)).toThrow(
-                        INPUT_ERROR_MESSAGE.INVALID_OPERATOR,
+                    expect(() => validateOperator(operator, 1, 1)).toThrowError(
+                        OperatorValidationError,
                     );
                 },
             );
@@ -88,8 +91,8 @@ describe('[Feature2] 피연산자 두 개와 연산자 하나의 연산 결과�
             it.each(['', null, undefined])(
                 `validateOperator(%p, 1, 1)`,
                 (operator) => {
-                    expect(() => validateOperator(operator, 1, 1)).toThrow(
-                        INPUT_ERROR_MESSAGE.INVALID_OPERATOR,
+                    expect(() => validateOperator(operator, 1, 1)).toThrowError(
+                        OperatorValidationError,
                     );
                 },
             );
@@ -100,8 +103,8 @@ describe('[Feature2] 피연산자 두 개와 연산자 하나의 연산 결과�
 describe('[Feature3] 연산 결과를 특수 처리한다.', () => {
     describe('연산 결과가 NaN인 경우, 오류를 발생시킨다.', () => {
         it(`validateResult(NaN)'`, () => {
-            expect(() => validateResult(NaN)).toThrow(
-                INPUT_ERROR_MESSAGE.INVALID_RESULT,
+            expect(() => validateResult(NaN)).toThrowError(
+                ResultValidationError,
             );
         });
     });
@@ -110,8 +113,8 @@ describe('[Feature3] 연산 결과를 특수 처리한다.', () => {
         it.each([-1, 1, -100, 100, -10000000, 10000000, +Infinity, -Infinity])(
             `validateResult(%i) `,
             (result) => {
-                expect(() => validateResult(result)).not.toThrow(
-                    OUTPUT_ERROR_MESSAGE.INVALID_RESULT,
+                expect(() => validateResult(result)).not.toThrowError(
+                    ResultValidationError,
                 );
             },
         );

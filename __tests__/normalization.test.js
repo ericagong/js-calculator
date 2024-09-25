@@ -1,4 +1,4 @@
-import { normalizeOutput } from '../src/normalization';
+import { normalizeOutput } from '../src/normalization.js';
 
 describe('[Feature3] 연산 결과를 특수 처리한다.', () => {
     describe('연산 결과가 소수인 경우, 소수점 이하는 버림 처리하고 정수값을 생성한다.', () => {
