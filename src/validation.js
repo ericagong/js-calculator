@@ -1,7 +1,7 @@
 import { operatorMapper } from './operation.js';
 import {
     EmptyOperandValidationError,
-    InvalidOperandValidationError,
+    NotNumericTypeOperandValidationError,
     LongOperandValidationError,
     OperatorValidationError,
     ResultValidationError,
@@ -32,7 +32,7 @@ export const validateOperand = (operand) => {
     }
 
     if (!(isNumber(operand) || isNumberStyleString(operand))) {
-        throw new InvalidOperandValidationError();
+        throw new NotNumericTypeOperandValidationError();
     }
 
     if (!isBelowDigits(operand, DECMINAL_POINT_LIMIT)) {

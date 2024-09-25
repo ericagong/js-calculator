@@ -5,7 +5,7 @@ import {
 } from '../src/validation.js';
 import {
     EmptyOperandValidationError,
-    InvalidOperandValidationError,
+    NotNumericTypeOperandValidationError,
     LongOperandValidationError,
     OperatorValidationError,
     ResultValidationError,
@@ -35,7 +35,7 @@ describe('[Fearture1] 피연산자 유효성을 검사한다.', () => {
             '+0.123',
         ])(`validateOperand(%p)`, (operand) => {
             expect(() => validateOperand(operand)).not.toThrowError(
-                InvalidOperandValidationError,
+                NotNumericTypeOperandValidationError,
             );
         });
     });
@@ -45,7 +45,7 @@ describe('[Fearture1] 피연산자 유효성을 검사한다.', () => {
             `validateOperand(%p)`,
             (operand) => {
                 expect(() => validateOperand(operand)).toThrowError(
-                    InvalidOperandValidationError,
+                    NotNumericTypeOperandValidationError,
                 );
             },
         );

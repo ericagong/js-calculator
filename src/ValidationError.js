@@ -18,7 +18,7 @@ export class EmptyOperandValidationError extends OperandValidationError {
     }
 }
 
-export class InvalidOperandValidationError extends OperandValidationError {
+export class NotNumericTypeOperandValidationError extends OperandValidationError {
     constructor() {
         super('피연산자가 숫자나 문자열 형태의 숫자가 아닙니다.');
     }

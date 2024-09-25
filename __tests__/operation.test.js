@@ -1,6 +1,6 @@
 import { operate } from '../src/operation.js';
 
-// TODO mapping 테스트로 변경해야하는 것이 아닐까?
+// TODO mapping 테스트로 변경해야하는 것이 아닌지 고민
 describe('[Feature2] 피연산자 두 개와 연산자 하나의 연산 결과를 생성한다.', () => {
     describe('두 개의 피연산자에 대해 덧셈 결과를 생성한다.', () => {
         it.each([
