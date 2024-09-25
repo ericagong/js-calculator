@@ -1,6 +1,7 @@
 const POSTIVE_INFINITY = +Infinity;
 const NEGATIVE_INFINITY = -Infinity;
-export const INFINITY_OUTPUT = '오류';
+const INFINITY_OUTPUT = '오류';
+
 const errorMessageForInfinity = (output) => {
     if (output === POSTIVE_INFINITY || output === NEGATIVE_INFINITY) {
         return INFINITY_OUTPUT;
