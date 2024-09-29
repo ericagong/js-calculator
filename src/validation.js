@@ -20,7 +20,7 @@ const isNumberStyleString = (operand) => {
 };
 
 export const DECMINAL_POINT_LIMIT = 3;
-const isBelowDigits = (operand, digits) => {
+const isValidLength = (operand, digits) => {
     const integerPart = Math.trunc(Math.abs(operand));
 
     return integerPart.toString().length <= digits;
@@ -35,7 +35,7 @@ export const validateOperand = (operand) => {
         throw new NotNumericTypeOperandValidationError();
     }
 
-    if (!isBelowDigits(operand, DECMINAL_POINT_LIMIT)) {
+    if (!isValidLength(operand, DECMINAL_POINT_LIMIT)) {
         throw new LongOperandValidationError();
     }
 };

@@ -1,9 +1,8 @@
-const POSTIVE_INFINITY = +Infinity;
-const NEGATIVE_INFINITY = -Infinity;
-const INFINITY_OUTPUT = '오류';
+import { go } from './utils/utils.js';
 
+const INFINITY_OUTPUT = '오류';
 const errorMessageForInfinity = (output) => {
-    if (output === POSTIVE_INFINITY || output === NEGATIVE_INFINITY) {
+    if (!Number.isFinite(output)) {
         return INFINITY_OUTPUT;
     }
     return output;
@@ -17,9 +16,5 @@ const convertToPositiveZero = (input) => {
     return Object.is(input, -0) ? 0 : input;
 };
 
-export const normalizeOutput = (output) => {
-    output = removeDecimal(output);
-    output = convertToPositiveZero(output);
-    output = errorMessageForInfinity(output);
-    return output;
-};
+export const normalizeOutput = (output) =>
+    go(output, removeDecimal, convertToPositiveZero, errorMessageForInfinity);
