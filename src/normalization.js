@@ -16,5 +16,5 @@ const convertToPositiveZero = (input) => {
     return Object.is(input, -0) ? 0 : input;
 };
 
-export const normalizeOutput = (output) =>
+export const normalize = (output) =>
     go(output, removeDecimal, convertToPositiveZero, errorMessageForInfinity);
