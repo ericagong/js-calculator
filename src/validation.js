@@ -7,35 +7,37 @@ import {
     ResultValidationError,
 } from './ValidationError.js';
 
-const isEmpty = (operand) => {
-    return operand === '' || operand === null || operand === undefined;
-};
+const isEmpty = (operand) =>
+    operand === '' || operand === null || operand === undefined;
 
-const isNumber = (operand) => {
-    return typeof operand === 'number';
-};
+const isBlank = (operand) =>
+    typeof operand === 'string' && operand.trim() === '';
 
-const isNumberStyleString = (operand) => {
-    return typeof operand === 'string' && !Number.isNaN(Number(operand));
-};
+const isNumber = (operand) => typeof operand === 'number';
 
-export const DECMINAL_POINT_LIMIT = 3;
-const isValidLength = (operand, digits) => {
+const isNumericString = (operand) =>
+    typeof operand === 'string' && !Number.isNaN(Number(operand));
+
+const isNumericType = (operand) =>
+    isNumber(operand) || isNumericString(operand);
+
+const isWithinDigitLimit = (operand, maxDigits) => {
     const integerPart = Math.trunc(Math.abs(operand));
 
-    return integerPart.toString().length <= digits;
+    return integerPart.toString().length <= maxDigits;
 };
 
+export const MAX_INTEGER_DIGIT_COUNT = 3;
 export const validateOperand = (operand) => {
-    if (isEmpty(operand)) {
+    if (isEmpty(operand) || isBlank(operand)) {
         throw new EmptyOperandValidationError();
     }
 
-    if (!(isNumber(operand) || isNumberStyleString(operand))) {
+    if (!isNumericType(operand)) {
         throw new NotNumericTypeOperandValidationError();
     }
 
-    if (!isValidLength(operand, DECMINAL_POINT_LIMIT)) {
+    if (!isWithinDigitLimit(operand, MAX_INTEGER_DIGIT_COUNT)) {
         throw new LongOperandValidationError();
     }
 };

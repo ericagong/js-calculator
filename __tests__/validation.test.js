@@ -11,13 +11,16 @@ import {
     ResultValidationError,
 } from '../src/ValidationError.js';
 
-describe('[Fearture1] 피연산자 유효성을 검사한다.', () => {
+describe('[Feature1] 피연산자 유효성을 검사한다.', () => {
     describe('피연산자가 빈 값이면, 오류를 생성한다.', () => {
-        it.each(['', null, undefined])(`validateOperand(%s)`, (operand) => {
-            expect(() => validateOperand(operand, 1)).toThrowError(
-                EmptyOperandValidationError,
-            );
-        });
+        it.each(['', null, undefined, '    '])(
+            `validateOperand(%s)`,
+            (operand) => {
+                expect(() => validateOperand(operand)).toThrowError(
+                    EmptyOperandValidationError,
+                );
+            },
+        );
     });
 
     describe('피연산자가 숫자나 문자열 형태의 숫자라면, 오류를 발생시키지 않는다.', () => {
