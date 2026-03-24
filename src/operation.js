@@ -5,13 +5,16 @@ const OPERATORS = Object.freeze({
     DIVIDE: '/',
 });
 
-export const operatorMapper = Object.freeze({
+const OPERATOR_MAPPER = Object.freeze({
     [OPERATORS.ADD]: (a, b) => a + b,
     [OPERATORS.SUBTRACT]: (a, b) => a - b,
     [OPERATORS.MULTIPLY]: (a, b) => a * b,
     [OPERATORS.DIVIDE]: (a, b) => a / b,
 });
 
+export const isSupportedOperator = (operator) =>
+    OPERATOR_MAPPER[operator] !== undefined;
+
 export const operate = (operator, operand1, operand2) => {
-    return operatorMapper[operator](operand1, operand2);
+    return OPERATOR_MAPPER[operator](operand1, operand2);
 };

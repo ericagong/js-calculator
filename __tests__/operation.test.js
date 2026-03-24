@@ -1,7 +1,17 @@
-import { operate } from '../src/operation.js';
+import { operate, isSupportedOperator } from '../src/operation.js';
 
-describe('[Feature2] 피연산자 두 개와 연산자 하나의 연산 결과를 생성한다.', () => {
-    describe('두 개의 피연산자에 대해 덧셈 결과를 생성한다.', () => {
+describe('isSupportedOperator', () => {
+    it.each(['+', '-', '*', '/'])('isSupportedOperator(%p) = true', (op) => {
+        expect(isSupportedOperator(op)).toBe(true);
+    });
+
+    it.each(['%', '**', '^', 'a'])('isSupportedOperator(%p) = false', (op) => {
+        expect(isSupportedOperator(op)).toBe(false);
+    });
+});
+
+describe('operate', () => {
+    describe('두 개의 피연산자에 대해 덧셈 결과를 생성한다', () => {
         it.each([
             { operand1: 1, operand2: 30 },
             { operand1: -1, operand2: 30 },
@@ -12,7 +22,7 @@ describe('[Feature2] 피연산자 두 개와 연산자 하나의 연산 결과�
         });
     });
 
-    describe('두 개의 피연산자에 대해 뺄셈 결과를 생성한다.', () => {
+    describe('두 개의 피연산자에 대해 뺄셈 결과를 생성한다', () => {
         it.each([
             { operand1: 1, operand2: 30 },
             { operand1: -1, operand2: 30 },
@@ -23,7 +33,7 @@ describe('[Feature2] 피연산자 두 개와 연산자 하나의 연산 결과�
         });
     });
 
-    describe('두 개의 피연산자에 대해 곱셈 결과를 생성한다.', () => {
+    describe('두 개의 피연산자에 대해 곱셈 결과를 생성한다', () => {
         it.each([
             { operand1: 1, operand2: 30 },
             { operand1: -1, operand2: 30 },
@@ -34,7 +44,7 @@ describe('[Feature2] 피연산자 두 개와 연산자 하나의 연산 결과�
         });
     });
 
-    describe('두 개의 피연산자에 대해 나눗셈 결과를 생성한다.', () => {
+    describe('두 개의 피연산자에 대해 나눗셈 결과를 생성한다', () => {
         it.each([
             { operand1: 1, operand2: 30 },
             { operand1: -1, operand2: 30 },
@@ -44,8 +54,8 @@ describe('[Feature2] 피연산자 두 개와 연산자 하나의 연산 결과�
             expect(operate('/', operand1, operand2)).toBe(operand1 / operand2);
         });
 
-        describe('피연산자 중 0이 있는 경우, 올바른 나눗셈 결과를 생성한다.', () => {
-            describe('첫 번째 피연산자만 0인 경우, 0을 생성한다.', () => {
+        describe('피연산자 중 0이 있는 경우, 올바른 나눗셈 결과를 생성한다', () => {
+            describe('첫 번째 피연산자만 0인 경우, 0을 생성한다', () => {
                 it.each([
                     { operand1: +0, operand2: 30 },
                     { operand1: +0, operand2: -30 },
@@ -61,7 +71,7 @@ describe('[Feature2] 피연산자 두 개와 연산자 하나의 연산 결과�
                 );
             });
 
-            describe('두 번째 피연산자만 0인 경우, 연산자 부호 동일성 여부에 따라 Infinity/-Infinity를 생성한다.', () => {
+            describe('두 번째 피연산자만 0인 경우, 연산자 부호 동일성 여부에 따라 Infinity/-Infinity를 생성한다', () => {
                 it.each([
                     { operand1: 30, operand2: +0 },
                     { operand1: -30, operand2: -0 },
@@ -85,7 +95,7 @@ describe('[Feature2] 피연산자 두 개와 연산자 하나의 연산 결과�
                 );
             });
 
-            describe('두 피연산자가 모두 0인 경우, NaN을 생성한다.', () => {
+            describe('두 피연산자가 모두 0인 경우, NaN을 생성한다', () => {
                 it.each([
                     { operand1: +0, operand2: +0 },
                     { operand1: +0, operand2: -0 },

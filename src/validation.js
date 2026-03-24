@@ -1,19 +1,22 @@
-import { operatorMapper } from './operation.js';
+import { isSupportedOperator } from './operation.js';
 import {
-    EmptyOperandValidationError,
-    NotNumericTypeOperandValidationError,
-    LongOperandValidationError,
-    OperatorValidationError,
-    ResultValidationError,
-} from './ValidationError.js';
+    EmptyOperandError,
+    NonNumericOperandError,
+    TooLongOperandError,
+} from './errors/OperandError.js';
+import {
+    EmptyOperatorError,
+    UnsupportedOperatorError,
+} from './errors/OperatorError.js';
+import { InvalidResultError } from './errors/ResultError.js';
 
-const isEmpty = (operand) =>
-    operand === '' || operand === null || operand === undefined;
+const isEmpty = (value) =>
+    value === '' || value === null || value === undefined;
 
-const isBlank = (operand) =>
-    typeof operand === 'string' && operand.trim() === '';
+const isBlank = (value) => typeof value === 'string' && value.trim() === '';
 
-const isNumber = (operand) => typeof operand === 'number';
+const isNumber = (operand) =>
+    typeof operand === 'number' && !Number.isNaN(operand);
 
 const isNumericString = (operand) =>
     typeof operand === 'string' && !Number.isNaN(Number(operand));
@@ -30,26 +33,30 @@ const isWithinDigitLimit = (operand, maxDigits) => {
 export const MAX_INTEGER_DIGIT_COUNT = 3;
 export const validateOperand = (operand) => {
     if (isEmpty(operand) || isBlank(operand)) {
-        throw new EmptyOperandValidationError();
+        throw new EmptyOperandError();
     }
 
     if (!isNumericType(operand)) {
-        throw new NotNumericTypeOperandValidationError();
+        throw new NonNumericOperandError();
     }
 
     if (!isWithinDigitLimit(operand, MAX_INTEGER_DIGIT_COUNT)) {
-        throw new LongOperandValidationError();
+        throw new TooLongOperandError();
     }
 };
 
 export const validateOperator = (operator) => {
-    if (operatorMapper[operator] === undefined) {
-        throw new OperatorValidationError();
+    if (isEmpty(operator) || isBlank(operator)) {
+        throw new EmptyOperatorError();
+    }
+
+    if (!isSupportedOperator(operator)) {
+        throw new UnsupportedOperatorError();
     }
 };
 
 export const validateResult = (result) => {
     if (Number.isNaN(result)) {
-        throw new ResultValidationError();
+        throw new InvalidResultError();
     }
 };

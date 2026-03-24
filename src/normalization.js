@@ -1,20 +1,18 @@
-import { go } from './utils/utils.js';
+const truncateDecimal = (result) => Math.trunc(result);
 
-const INFINITY_OUTPUT = '오류';
-const errorMessageForInfinity = (output) => {
-    if (!Number.isFinite(output)) {
-        return INFINITY_OUTPUT;
-    }
-    return output;
-};
+const convertNegativeZeroToZero = (result) =>
+    Object.is(result, -0) ? 0 : result;
 
-const removeDecimal = (input) => {
-    return Math.trunc(input);
-};
+const ERROR_RESULT = '오류';
+const replaceNonFiniteWithError = (result) =>
+    Number.isFinite(result) ? result : ERROR_RESULT;
 
-const convertToPositiveZero = (input) => {
-    return Object.is(input, -0) ? 0 : input;
-};
+const go = (...args) => args.reduce((acc, fn) => fn(acc));
 
-export const normalize = (output) =>
-    go(output, removeDecimal, convertToPositiveZero, errorMessageForInfinity);
+export const normalize = (result) =>
+    go(
+        result,
+        truncateDecimal,
+        convertNegativeZeroToZero,
+        replaceNonFiniteWithError,
+    );
