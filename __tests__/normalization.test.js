@@ -1,7 +1,7 @@
 import { normalize } from '../src/normalization.js';
 
 describe('normalize', () => {
-    describe('연산 결과가 소수인 경우, 소수점 이하는 버림 처리하고 정수값을 반환한다', () => {
+    describe('연산 결과에 소수부가 존재한다면, 소수점 이하를 버림 처리한 정수값을 반환한다', () => {
         it.each([
             { result: 1.1, expected: 1 },
             { result: -1.1, expected: -1 },
@@ -27,5 +27,17 @@ describe('normalize', () => {
                 expect(normalize(result)).toBe('오류');
             },
         );
+    });
+
+    describe('정규화가 필요 없는 정수라면, 그대로 반환한다', () => {
+        it.each([
+            { result: 0, expected: 0 },
+            { result: 1, expected: 1 },
+            { result: -1, expected: -1 },
+            { result: 100, expected: 100 },
+            { result: -100, expected: -100 },
+        ])(`normalize($result) = $expected`, ({ result, expected }) => {
+            expect(normalize(result)).toBe(expected);
+        });
     });
 });
